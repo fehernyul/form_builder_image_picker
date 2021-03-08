@@ -7,15 +7,15 @@ import 'package:image_picker/image_picker.dart';
 
 class ImageSourceBottomSheet extends StatefulWidget {
   /// Optional maximum height of image
-  final double maxHeight;
+  final double? maxHeight;
 
   /// Optional maximum width of image
-  final double maxWidth;
+  final double? maxWidth;
 
   /// The imageQuality argument modifies the quality of the image, ranging from
   /// 0-100 where 100 is the original/max quality. If imageQuality is null, the
   /// image with the original quality will be returned.
-  final int imageQuality;
+  final int? imageQuality;
 
   /// Use preferredCameraDevice to specify the camera to use when the source is
   /// `ImageSource.camera`. The preferredCameraDevice is ignored when source is
@@ -34,20 +34,20 @@ class ImageSourceBottomSheet extends StatefulWidget {
   /// available.
   final void Function(File) onImageSelected;
 
-  final Widget cameraIcon;
-  final Widget galleryIcon;
-  final Widget cameraLabel;
-  final Widget galleryLabel;
-  final EdgeInsets bottomSheetPadding;
+  final Widget? cameraIcon;
+  final Widget? galleryIcon;
+  final Widget? cameraLabel;
+  final Widget? galleryLabel;
+  final EdgeInsets? bottomSheetPadding;
 
   ImageSourceBottomSheet({
-    Key key,
+    Key? key,
     this.maxHeight,
     this.maxWidth,
     this.imageQuality,
     this.preferredCameraDevice = CameraDevice.rear,
-    this.onImage,
-    this.onImageSelected,
+    required this.onImage,
+    required this.onImageSelected,
     this.cameraIcon,
     this.galleryIcon,
     this.cameraLabel,
@@ -75,19 +75,18 @@ class _ImageSourceBottomSheetState extends State<ImageSourceBottomSheet> {
       preferredCameraDevice: widget.preferredCameraDevice,
     );
     _isPickingImage = false;
-    if (null != pickedFile) {
-      if (kIsWeb) {
-        if (null != widget.onImage) {
-          widget.onImage(await pickedFile.readAsBytes());
-        }
-      } else {
-        if (null != widget.onImageSelected) {
-          // Warning:  this will not work on the web platform because pickedFile
-          // will instead point to a network resource.
-          final imageFile = File(pickedFile.path);
-          assert(null != imageFile);
-          widget.onImageSelected(imageFile);
-        }
+
+    if (kIsWeb) {
+      if (null != widget.onImage) {
+        widget.onImage(await pickedFile.readAsBytes());
+      }
+    } else {
+      if (null != widget.onImageSelected) {
+        // Warning:  this will not work on the web platform because pickedFile
+        // will instead point to a network resource.
+        final imageFile = File(pickedFile.path);
+        assert(null != imageFile);
+        widget.onImageSelected(imageFile);
       }
     }
   }

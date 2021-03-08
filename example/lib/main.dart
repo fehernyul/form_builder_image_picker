@@ -43,8 +43,8 @@ class MyHomePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 15),
                 RaisedButton(onPressed: () {
-                  if (_formKey.currentState.saveAndValidate()) {
-                    print(_formKey.currentState.value);
+                  if (_formKey.currentState!.saveAndValidate()) {
+                    print(_formKey.currentState!.value);
                   }
                 })
               ],
